@@ -18,11 +18,17 @@ class ServidorMODBUS():
         """
         execut server modbus
         """
+        lista = [300,2,3,4,5,6,7]
         try:
             self._server.start()
             print("Server ONLINE")
+            i = 0
             while True: 
-                self._db.set_words(1000,[random.randrange(int(0.95*400),int(1.05*400))])
+                #for i in range(0,7):
+                if i == 7:
+                    i = 0
+                self._db.set_words(1000,[lista[i]])
+                i+=1
                 print('=========================')
                 print('Table Modbus')
                 print (f'Holding Register \r\n R1000 {self._db.get_words(1000)} \r\n R2000 {self._db.get_words(2000)}')
