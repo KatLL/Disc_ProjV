@@ -1,0 +1,93 @@
+#:kivy 1.11.1
+<MyWidget>:
+    BoxLayout:
+        orientation:'vertical'
+        MDToolbar:
+            title: 'Projeto Integrador'
+            md_bg_color: app.theme_cls.accent_color
+            margin: "5dp"
+        MDBottomNavigation:
+            panel_color: app.theme_cls.accent_color
+            text_color_normal: 0.4,0.4,0.4,1
+            text_color_active: 0.8,0.8,0.8,1
+            MDBottomNavigationItem:
+                name: "config"
+                text: "CONFIGURAÇÕES"
+                incon: 'cog'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    padding: "7dp"
+                    spacing: "50dp"
+                    Image:
+                        source: "C:\Projetos\PJ3\imgs\modbus-organization-inc-vector-logo-small.png"
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        size_hint: (1,0.2)
+                    MDTextField:
+                        id: hostname
+                        text: "127.0.0.1"
+                        hint_text: "Endereço IP"
+                        size_hint: (0.2,None)
+                        height: "50dp"
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    MDTextField:
+                        id: port
+                        text: "502"
+                        hint_text: "porta"
+                        size_hint: (0.2,None)
+                        height: "50dp"
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    MDRoundFlatIconButton:
+                        id: bt_con
+                        text: "CONECTAR"
+                        icon: 'connection'
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        on_release: root.connect()
+
+            MDBottomNavigationItem:
+                name: "data"
+                text: "DADOS"
+                icon: 'chart-donut'
+                ScrollView:
+                    size_hint: (1,None)
+                    size: (Window.width, Window.height)
+                    bar_pos_y: 'left'
+                    bar_width: 20
+                    affect_cls: 'ScrollEffect'
+                    MDStackLayout:
+                        id: modbus_data
+                        size_hint: (1,None)
+                        padding: 0.05*Window.width,"150dp"
+                        spacing: (Window.width/5-2*0.05*Window.width)/3
+                        adaptative_height: True
+
+<DataCard>:
+    orientation: "vertical"
+    padding: "0.5dp"
+    size_hint: None, None
+    size: Window.width/5, "150dp"
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    MDLabel:
+        text: root.title
+        size_hint_y: None
+        heigth: self.texture_size[1]
+        pos_hint: {'top':1}
+    MDSeparator:
+        heigth: "1dp"
+
+<CardHoldingRegister>:
+    MDTextField:
+        id: textfield
+        helper_text: "Enter para enviar dado"
+        helper_text_mode:   'persistent'
+        multiline: False
+        on_text_validate: root.write_data()
+
+<CardInputRegister>:
+    MDLabel:
+        id: label
+
+<CardCoil>:
+    MDSwitch:
+        id: switch
+        on_release: root.write_data()
+
